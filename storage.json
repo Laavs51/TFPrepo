@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Пиво Жигулевское",
+    "price": 55.9,
+    "for_adult": true,
+    "num": 3
+  },
+  {
+    "name": "Шоколадка 'Аленка'",
+    "price": 60.3,
+    "for_adult": false,
+    "num": 1
+  },
+  {
+    "name": "Минералка 'Угличская'",
+    "price": 29.9,
+    "for_adult": false,
+    "num": 7
+  },
+  {
+    "name": "Сигареты 'Балканская звезда'",
+    "price": 299.9,
+    "for_adult": true,
+    "num": 9
+  }
+]
