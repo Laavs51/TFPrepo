@@ -1,13 +1,12 @@
 """ Модель "Покупатель" """
-from decimal import Decimal
 
 
 class Customer:
 
-    def __init__(self, name: str, age: int, money: Decimal):
+    def __init__(self, name: str, age: int, money: str):
         self.name = name
-        self.age = age
-        self.money = money
+        self.age = int(age)
+        self.money = int(money)
 
     @property
     def is_adult(self):

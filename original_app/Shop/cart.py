@@ -17,9 +17,9 @@ class Cart:
         cart_result = '\n'.join(f'{product} - {num}' for product, num in self.items.items())
         total_cost = sum(product.price * num for product, num in self.items.items())
         money_remains = self.customer.money - total_cost
-        return f'{cart_result}' \
-               f'Итого: {total_cost}' \
-               f'Осталось: {money_remains}'
+        return f'\n{cart_result}' \
+               f'\nИтого: {total_cost} у.е.' \
+               f'\nОсталось: {money_remains} у.е.'
 
     def add(self, product_name: str):
         product = self.owner.get_product(product_name)
@@ -34,11 +34,13 @@ class Cart:
             return False
 
         self.items[product] += 1
+        self.owner.mark_collected(product_name)
         return True
 
     def can_afford(self, product: Product) -> bool:
-        cart_value = sum(self.items.values())
-        return self.customer.money >= cart_value + product.price
+        total_value = sum((item.price * num for item, num in self.items.items()), product.price)
+        print(self.customer.money, total_value)
+        return self.customer.money >= total_value
 
     def is_forbidden_for_customer(self, product: Product) -> bool:
-        return not product.for_adult or self.customer.is_adult
+        return product.for_adult and not self.customer.is_adult

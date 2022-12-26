@@ -1,5 +1,4 @@
 """ Модель "Товар" """
-from decimal import Decimal
 from typing import Any, Dict
 
 
@@ -7,7 +6,7 @@ class Product:
 
     def __init__(self, name: str, price: float, for_adult: bool):
         self.name = name
-        self.price = Decimal(price)
+        self.price = int(price)
         self.for_adult = for_adult
 
     @classmethod
@@ -15,7 +14,10 @@ class Product:
         return cls(record['name'], record['price'], record['for_adult'])
 
     def __str__(self):
-        return f'{self.name}: {self.price}'
+        return f'{self.name}: {self.price} у.е.'
+
+    def __hash__(self):
+        return hash(str(self))
 
     def __eq__(self, other: Any):
         if not isinstance(other, Product):
