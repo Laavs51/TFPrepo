@@ -32,9 +32,17 @@ def get_cart_msg(money: int, items: Dict[Product, int]):
            f'\nОсталось: {money_remains} у.е.'
 
 
-def add(items: Dict[Product, int], product_name: str):
-    return {product: num + 1 if product.name == product_name else num
-            for product, num in items.items()}
+def add(items: Dict[Product, int], product: Product):
+    if product not in items:
+        items.update({product: 1})
+        return items
+    return {prod: num + 1 if prod == prod else num
+            for prod, num in items.items()}
+
+
+def remove(storage: Dict[str, int], product_name: str):
+    return {name: num - 1 if name == product_name else num
+            for name, num in storage.items()}
 
 
 class Cart:
@@ -59,8 +67,8 @@ class Cart:
         if self.is_forbidden_for_customer(product):
             return False
 
-        self.items = add(self.items, product_name)
-        self.shop.mark_collected(product_name)
+        self.items = add(self.items, product)
+        self.shop.storage = remove(self.shop.storage, product_name)
         return True
 
     def can_afford(self, product: Product) -> bool:
