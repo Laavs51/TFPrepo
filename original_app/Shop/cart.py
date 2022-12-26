@@ -9,7 +9,7 @@ from .shop import Shop
 class Cart:
 
     def __init__(self, customer: Customer):
-        self.owner = Shop()
+        self.shop = Shop()
         self.customer = customer
         self.items = defaultdict(int)
 
@@ -22,7 +22,7 @@ class Cart:
                f'\nОсталось: {money_remains} у.е.'
 
     def add(self, product_name: str):
-        product = self.owner.get_product(product_name)
+        product = self.shop.get_product(product_name)
 
         if product is None:
             return False
@@ -34,12 +34,11 @@ class Cart:
             return False
 
         self.items[product] += 1
-        self.owner.mark_collected(product_name)
+        self.shop.mark_collected(product_name)
         return True
 
     def can_afford(self, product: Product) -> bool:
         total_value = sum((item.price * num for item, num in self.items.items()), product.price)
-        print(self.customer.money, total_value)
         return self.customer.money >= total_value
 
     def is_forbidden_for_customer(self, product: Product) -> bool:
