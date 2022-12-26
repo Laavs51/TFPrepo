@@ -26,6 +26,9 @@ class Shop:
     def __str__(self):
         return '\n'.join(f'{product} у.е. - {num}' for product, num in self.storage.items())
 
+    def check_product(self, product_name):
+        return product_name in self.products_by_name
+
     def get_product(self, product_name: str) -> Optional[Product]:
         product = self.products_by_name.get(product_name)
 

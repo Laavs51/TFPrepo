@@ -1,21 +1,21 @@
 """ Модель "Корзина" """
-from collections import defaultdict
+from typing import Dict
 
 from .customer import Customer
 from .product import Product
 from .shop import Shop
 
 
-def can_afford(money: int, items: defaultdict[Product, int], product: Product) -> bool:
+def can_afford(money: int, items: Dict[Product, int], product: Product) -> bool:
     total_value = sum((item.price * num for item, num in items.items()), product.price)
     return money >= total_value
 
 
-def get_shopping_list(items: defaultdict[Product, int]) -> str:
+def get_shopping_list(items: Dict[Product, int]) -> str:
     return '\n'.join(f'{product} - {num}' for product, num in items.items())
 
 
-def get_total_cost(items: defaultdict[Product, int]) -> int:
+def get_total_cost(items: Dict[Product, int]) -> int:
     return sum(product.price * num for product, num in items.items())
 
 
@@ -23,7 +23,7 @@ def get_money_remains(money: int, total_cost: int) -> int:
     return money - total_cost
 
 
-def get_cart_msg(money: int, items: defaultdict[Product, int]):
+def get_cart_msg(money: int, items: Dict[Product, int]):
     cart_result = get_shopping_list(items)
     total_cost = get_total_cost(items)
     money_remains = get_money_remains(money, total_cost)
@@ -32,12 +32,17 @@ def get_cart_msg(money: int, items: defaultdict[Product, int]):
            f'\nОсталось: {money_remains} у.е.'
 
 
+def add(items: Dict[Product, int], product_name: str):
+    return {product: num + 1 if product.name == product_name else num
+            for product, num in items.items()}
+
+
 class Cart:
 
     def __init__(self, customer: Customer):
         self.shop = Shop()
         self.customer = customer
-        self.items = defaultdict(int)
+        self.items = dict()
 
     def __str__(self):
         return get_cart_msg(self.customer.money, self.items)
@@ -54,7 +59,7 @@ class Cart:
         if self.is_forbidden_for_customer(product):
             return False
 
-        self.items[product] += 1
+        self.items = add(self.items, product_name)
         self.shop.mark_collected(product_name)
         return True
 

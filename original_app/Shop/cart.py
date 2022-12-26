@@ -22,10 +22,10 @@ class Cart:
                f'\nОсталось: {money_remains} у.е.'
 
     def add(self, product_name: str):
-        product = self.shop.get_product(product_name)
-
-        if product is None:
+        if not self.shop.check_product(product_name):
             return False
+
+        product = self.shop.get_product(product_name)
 
         if not self.can_afford(product):
             return False
